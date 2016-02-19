@@ -239,23 +239,22 @@ set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
 response = br.submit()
 
 
-# create dictionary for all the cities from the leaving from cities
+"""create dictionary for all the cities from the leaving from cities"""
 
 
 
 city_dict = create_city_dict(br)
 
-ipdb.set_trace()
-
 
 train_route_list = []
 
-# reopen page in order to clear country field as its optional but defines leaving_from
+""" reopen page in order to clear country field as its optional but defines leaving_from"""
 
 webpage = br.open(args.path)
 
-# if from defined, then set that as city, else iterate through whole list
-# also check if from is valid
+"""if from defined, then set that as city, check if from is valid, else exit
+else iterate through whole list 
+"""
 
 
 
