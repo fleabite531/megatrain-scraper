@@ -26,6 +26,8 @@ import datetime
 
 import mechanize
 
+import beautifulsoup
+
 # set up names of form, control ids etc
 
 FORMNAME = "ctl01"
