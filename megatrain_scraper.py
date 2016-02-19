@@ -153,7 +153,6 @@ def train_routes_from_city(br, city_dict, leaving_from_city):
         # set_dropdown_control(FORMNAME, LEAVINGFROMCONTROLID, str(leaving_from_city))
 
 
-        TEST CHAGE OOOPS I MEESED UP
         response = br.submit()
 
         # above needed to be done in order to refresh the travelling to dropdown before
