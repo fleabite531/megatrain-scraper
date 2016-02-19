@@ -261,6 +261,10 @@ if args.from_city is None:
 
 else:
     print "Checking for trains leaving from " + args.from_city
+
+    if args.from_city not in city_dict:
+        print "Error %s not valid city."
+        exit()
    
     train_route_list = train_routes_from_city(br, city_dict, args.from_city)
 
