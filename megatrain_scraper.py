@@ -135,7 +135,6 @@ def train_routes_from_city(br, city_dict, leaving_from_city):
             in travelling_to_control.items if int(travelling_to_city_tag.name) in city_dict]
     """
 
-    ipdb.set_trace()
 
 
     for travelling_to_city in travelling_to_city_list:
