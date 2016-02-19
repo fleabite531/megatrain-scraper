@@ -127,7 +127,7 @@ def train_routes_from_city(br, city_dict, leaving_from_city):
 
     # below changed 18/2 keyvalueswap
 
-    travelling_to_city_list = [int(travelling_to_city_tag.name) for travelling_to_city_tag \
+    travelling_to_city_list = [travelling_to_city_tag.attrs['label'] for travelling_to_city_tag \
             in travelling_to_control.items if travelling_to_city_tag.attrs['label'] in city_dict]
 
     """
