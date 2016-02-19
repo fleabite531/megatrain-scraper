@@ -203,6 +203,8 @@ def train_routes_from_city(br, city_dict, leaving_from_city):
 
 
 
+
+
 # MAIN starts here
 
 # get path either as file or url and open contents into webpage_text as string
@@ -243,6 +245,7 @@ response = br.submit()
 
 city_dict = create_city_dict(br)
 
+ipdb.set_trace()
 
 
 train_route_list = []
