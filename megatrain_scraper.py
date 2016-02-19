@@ -165,21 +165,32 @@ def train_routes_from_city(br, city_dict, leaving_from_city):
         leaving_from_control.readonly = False
         leaving_from_control.disabled = False
         # below changed 18/2 keyvalueswap
-        leaving_from_control.value = [str(leaving_from_city)]
+        leaving_from_control.value = [str(city_dict[leaving_from_city])]
         # leaving_from_control.value = [str(leaving_from_city)]
         travelling_to_control = br.form.find_control(TRAVELLINGTOCONTROLID)
         travelling_to_control.readonly = False
         travelling_to_control.disabled = False
 
-        leaving_from_control.value = [str(leaving_from_city)]
-        travelling_to_control.value = [str(travelling_to_city)]
+        # below changed 18/2 keyvalueswap
+        leaving_from_control.value = [str(city_dict[leaving_from_city])]
+        #leaving_from_control.value = [str(leaving_from_city)]
+
+        # below changed 18/2 keyvalueswap
+        travelling_to_control.value = [str(city_dict[travelling_to_city])]
+        #travelling_to_control.value = [str(travelling_to_city)]
+
         response = br.submit()
         br.select_form(FORMNAME)
         travelling_by_control = br.form.find_control("JourneyPlanner$ddlTravellingBy")
         for travelling_by_item in travelling_by_control.items:
             if travelling_by_item.name == "2":  # train
-                print "TRAIN ON ROUTE %s to %s " % (city_dict[leaving_from_city] , city_dict[travelling_to_city])
-                train_route_list.append([city_dict[leaving_from_city] , city_dict[travelling_to_city]])
+                # below changed 18/2 keyvalueswap
+                print "TRAIN ON ROUTE %s to %s " % (leaving_from_city , travelling_to_city)
+                # print "TRAIN ON ROUTE %s to %s " % (city_dict[leaving_from_city] , city_dict[travelling_to_city])
+
+                # below changed 18/2 keyvalueswap
+                train_route_list.append([leaving_from_city , travelling_to_city])
+                # train_route_list.append([city_dict[leaving_from_city] , city_dict[travelling_to_city]])
 
 
 
