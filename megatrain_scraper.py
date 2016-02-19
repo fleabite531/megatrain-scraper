@@ -26,7 +26,7 @@ import datetime
 
 import mechanize
 
-import beautifulsoup
+from bs4 import BeautifulSoup
 
 # set up names of form, control ids etc
 
