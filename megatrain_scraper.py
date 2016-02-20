@@ -245,6 +245,15 @@ response = br.submit()
 
 city_dict = create_city_dict(br)
 
+""" if valid_cities argument, then just print valid cities and exit"""
+
+if args.print_valid_cities:
+    print "Valid cities are : )
+    for city in city_dict.keys():
+        print city
+    sys.exit()
+
+
 
 train_route_list = []
 
@@ -262,11 +271,12 @@ if args.from_city is None:
         train_route_list += train_routes_from_city(br, city_dict, leaving_from_city)
 
 else:
-    print "Checking for trains leaving from " + args.from_city
 
     if args.from_city not in city_dict:
         sys.exit("Error %s not valid city." % (args.from_city))
    
+    print "Checking for trains leaving from " + args.from_city
+
     train_route_list = train_routes_from_city(br, city_dict, args.from_city)
 
 
