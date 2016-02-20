@@ -251,7 +251,7 @@ city_dict = create_city_dict(br)
 
 if args.print_valid_cities:
     print "Valid cities are : "
-    for city in city_dict.keys():
+    for city in sorted(city_dict.keys()):
         print city
     sys.exit()
 
