@@ -216,6 +216,8 @@ parser.add_argument("--from-city", help="optional field if only want to check le
         city")
 parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names\
         and exit", action="store_true")
+
+ipdb.set_trace()
 args = parser.parse_args()
 
 
