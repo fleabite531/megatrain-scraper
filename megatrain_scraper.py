@@ -250,7 +250,7 @@ city_dict = create_city_dict(br)
 """ if valid_cities argument, then just print valid cities and exit"""
 
 if args.print_valid_cities:
-    print "Valid cities are : )
+    print "Valid cities are : "
     for city in city_dict.keys():
         print city
     sys.exit()
