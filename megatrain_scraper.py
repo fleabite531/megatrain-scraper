@@ -1,22 +1,31 @@
-# Finds all routes on megabus booking page for which a train option is available
-#
-# Uses mechanize module in order to emulate a browser
-#
-# Megabus website requires 
-# each previous input to be completed, and then uses POST to retrieve options for next 
-# control. Mandatory controls are in this order: 
-# Number of passesngers > Leaving from > Travelling to > Travelling by.
-# For each stage in the control all the previous controls need to be reset
-#
-# Program opens page.
-# Builds dictionary of all megabus destinations and their assigned megabus integer id.
-# Itereates through this dictionary
-# For each entry this is set as leaving from option
-# A list is created of all destinations in travelling to control. This is different for 
-# each leaving from destination and so is created anew for each leaving from.
-# This travelling to list is then iterated through. If the travelling by now includes
-# train, the leaving from - travelling to combination is saved into a list of paired lists
-# 
+"""
+Finds all routes on megabus booking page for which a train option is available
+
+Uses mechanize module in order to emulate a browser
+
+Megabus website requires 
+each previous input to be completed, and then uses POST to retrieve options for next 
+control. Mandatory controls are in this order: 
+Number of passesngers > Leaving from > Travelling to > Travelling by.
+For each stage in the control all the previous controls need to be reset
+
+Program opens page.
+Builds dictionary of all megabus destinations and their assigned megabus integer id.
+Itereates through this dictionary
+For each entry this is set as leaving from option
+A list is created of all destinations in travelling to control. This is different for 
+each leaving from destination and so is created anew for each leaving from.
+This travelling to list is then iterated through. If the travelling by now includes
+train, the leaving from - travelling to combination is saved into a list of paired lists
+
+"""
+
+"""
+TODO :
+fix so doesn't require output file if printing list of cities
+add schedule flag to acquire schedule
+
+"""
 
 
 import sys
