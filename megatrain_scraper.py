@@ -37,7 +37,7 @@ import mechanize
 
 from bs4 import BeautifulSoup
 
- """set up names of form, control ids etc """
+"""set up names of form, control ids etc """
 
 FORMNAME = "ctl01"
 CONTROLSTATEID = "JourneyPlanner$ddlLeavingFromState"
