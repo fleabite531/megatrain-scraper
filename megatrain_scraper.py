@@ -37,15 +37,13 @@ import mechanize
 
 from bs4 import BeautifulSoup
 
-# set up names of form, control ids etc
+ """set up names of form, control ids etc """
 
 FORMNAME = "ctl01"
 CONTROLSTATEID = "JourneyPlanner$ddlLeavingFromState"
 LEAVINGFROMCONTROLID = "JourneyPlanner$ddlLeavingFrom"
 TRAVELLINGTOCONTROLID = "JourneyPlanner$ddlTravellingTo"
 NUMPASSENGERSCONTROLID = "JourneyPlanner$txtNumberOfPassengers"
-
-
 
 
 
@@ -81,7 +79,7 @@ def create_city_dict(br):
 
     br.select_form(FORMNAME) 
 
-    # just select cities in England (1), Scotland (2) or Wales (3)
+    """ just select cities in England (1), Scotland (2) or Wales (3) """
 
     for country_id in range (1,4):
 
@@ -96,9 +94,7 @@ def create_city_dict(br):
         
         for item in leaving_from_control.items:
             if int(item.name) > 0:
-                # below changed 18/2 keyvalueswap
                 city_dict[item.attrs["label"]] = item.name
-                # city_dict[int(item.name)] = item.attrs["label"]
     
 
     return city_dict
@@ -112,96 +108,74 @@ def train_routes_from_city(br, city_dict, leaving_from_city):
     train_route_list = []
 
 
-    # below changed 18/2 keyvalueswap
     print "checking leaving from : " , leaving_from_city
-    # print "checking leaving from : " , city_dict[leaving_from_city]
 
 
     set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
-    # below changed 18/2 keyvalueswap
     set_dropdown_control(FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-    # set_dropdown_control(FORMNAME, LEAVINGFROMCONTROLID, str(leaving_from_city))
 
 
     response = br.submit()
 
-    # iterate through the travelling to cities in the dropdown that results from 
-    # submitting each of the leaving from cities
+    """ iterate through the travelling to cities in the dropdown that results from 
+    submitting each of the leaving from cities
+    """
 
     br.select_form(FORMNAME) 
     travelling_to_control = br.form.find_control(TRAVELLINGTOCONTROLID)
     travelling_to_control.readonly = False
     travelling_to_control.disabled = False
 
-    # create list from travelling to dropdown that only includes cities in mainland GB
-
-    # below changed 18/2 keyvalueswap
-
-    travelling_to_city_list = [travelling_to_city_tag.attrs['label'] for travelling_to_city_tag \
-            in travelling_to_control.items if travelling_to_city_tag.attrs['label'] in city_dict]
-
+    """ create list from travelling to dropdown that only includes cities in mainland GB
     """
-    travelling_to_city_list = [int(travelling_to_city_tag.name) for travelling_to_city_tag \
-            in travelling_to_control.items if int(travelling_to_city_tag.name) in city_dict]
-    """
+
+
+    travelling_to_city_list = [travelling_to_city_tag.attrs['label'] \
+            for travelling_to_city_tag in travelling_to_control.items \
+            if travelling_to_city_tag.attrs['label'] in city_dict]
 
 
 
     for travelling_to_city in travelling_to_city_list:
 
-
-        # below changed 18/2 keyvalueswap
         print "travelling to : ", travelling_to_city
-        # print "travelling to : ", city_dict[int(travelling_to_city)]
 
         webpage = br.open(args.path)
         set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
-        # below changed 18/2 keyvalueswap
         set_dropdown_control(FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-        # set_dropdown_control(FORMNAME, LEAVINGFROMCONTROLID, str(leaving_from_city))
 
 
         response = br.submit()
 
-        # above needed to be done in order to refresh the travelling to dropdown before
-        # submitting the same info but this time with travelling to filled in as well
-        # was getting incorrect responses before clearing the form with the above, even
-        # though it looks redundant
+        """ above needed to be done in order to refresh the travelling to dropdown before
+        submitting the same info but this time with travelling to filled in as well
+        was getting incorrect responses before clearing the form with the above, even
+        though it looks redundant
+        """
 
         br.select_form(FORMNAME)
         leaving_from_control = br.form.find_control(LEAVINGFROMCONTROLID)
         leaving_from_control.readonly = False
         leaving_from_control.disabled = False
-        # below changed 18/2 keyvalueswap
         leaving_from_control.value = [str(city_dict[leaving_from_city])]
-        # leaving_from_control.value = [str(leaving_from_city)]
         travelling_to_control = br.form.find_control(TRAVELLINGTOCONTROLID)
         travelling_to_control.readonly = False
         travelling_to_control.disabled = False
 
-        # below changed 18/2 keyvalueswap
         leaving_from_control.value = [str(city_dict[leaving_from_city])]
-        #leaving_from_control.value = [str(leaving_from_city)]
 
-        # below changed 18/2 keyvalueswap
         travelling_to_control.value = [str(city_dict[travelling_to_city])]
-        #travelling_to_control.value = [str(travelling_to_city)]
 
         response = br.submit()
         br.select_form(FORMNAME)
         travelling_by_control = br.form.find_control("JourneyPlanner$ddlTravellingBy")
         for travelling_by_item in travelling_by_control.items:
             if travelling_by_item.name == "2":  # train
-                # below changed 18/2 keyvalueswap
                 print "TRAIN ON ROUTE %s to %s " % (leaving_from_city , travelling_to_city)
-                # print "TRAIN ON ROUTE %s to %s " % (city_dict[leaving_from_city] , city_dict[travelling_to_city])
 
-                # below changed 18/2 keyvalueswap
                 train_route_list.append([leaving_from_city , travelling_to_city])
-                # train_route_list.append([city_dict[leaving_from_city] , city_dict[travelling_to_city]])
-
 
 
 
@@ -214,15 +188,15 @@ def train_routes_from_city(br, city_dict, leaving_from_city):
 
 
 
-# MAIN starts here
+""" MAIN starts here """
 
-# get path either as file or url and open contents into webpage_text as string
+""" get path either as file or url and open contents into webpage_text as string"""
 
 parser = argparse.ArgumentParser()
 parser.add_argument("path", help="path to file or url to process")
 parser.add_argument("output", help="output file")
-parser.add_argument("--from-city", help="optional field if only want to check leaving from a specific\
-        city")
+parser.add_argument("--from-city", help="optional field if only want to check leaving \
+        from a specific city")
 
 parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names\
         and exit", action="store_true", default=False)
