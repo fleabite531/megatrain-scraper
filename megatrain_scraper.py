@@ -219,7 +219,6 @@ parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid ci
         and exit", action="store_true", default=False)
 
 
-ipdb.set_trace()
 args = parser.parse_args()
 
 
