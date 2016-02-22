@@ -288,9 +288,9 @@ else:
     #if args.from_city not in city_dict:
         sys.exit("Error %s not valid city." % (args.from_city))
    
-    print "Checking for trains leaving from " + args.from_city
+    print "Checking for trains leaving from " + from_city
 
-    train_route_list = train_routes_from_city(br, city_dict, args.from_city)
+    train_route_list = train_routes_from_city(br, city_dict, from_city)
 
 
 
