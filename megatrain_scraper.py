@@ -279,13 +279,11 @@ else:
 
     from_city = ""
     for city in city_dict:
-        print city
         if city.lower() == args.from_city.lower():
             from_city = city
             break
 
     if from_city == "":
-    #if args.from_city not in city_dict:
         sys.exit("Error %s not valid city." % (args.from_city))
    
     print "Checking for trains leaving from " + from_city
