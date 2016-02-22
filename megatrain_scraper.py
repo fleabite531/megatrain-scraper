@@ -284,7 +284,8 @@ else:
             break
 
     if from_city == "":
-        sys.exit("Error %s not valid city." % (args.from_city))
+        sys.exit("Error %s not valid city. Use --print-cities option to see list of \
+                city options." % (args.from_city))
    
     print "Checking for trains leaving from " + from_city
 
