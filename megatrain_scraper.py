@@ -280,7 +280,7 @@ else:
     from_city = ""
     for city in city_dict:
         print city
-        if lower(city) == lower(args.from_city):
+        if city.lower() == args.from_city.lower():
             from_city = city
             break
 
