@@ -214,8 +214,10 @@ parser.add_argument("path", help="path to file or url to process")
 parser.add_argument("output", help="output file")
 parser.add_argument("--from-city", help="optional field if only want to check leaving from a specific\
         city")
+
 parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names\
-        and exit", action="store_true")
+        and exit", action="store_true", default=False)
+
 
 ipdb.set_trace()
 args = parser.parse_args()
@@ -276,6 +278,10 @@ if args.from_city is None:
 
 else:
 
+    for city in city_dict:
+        print city
+    exit()
+
     if args.from_city not in city_dict:
         sys.exit("Error %s not valid city." % (args.from_city))
    
@@ -300,7 +306,5 @@ with open(args.output, "w+") as f:
         f.write("FROM : " + city_pairs[0] + " TO : " + city_pairs[1] + "\n")
 
 
-exit()
-    
 
 
