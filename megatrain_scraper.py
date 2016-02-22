@@ -103,9 +103,11 @@ def create_city_dict(br):
 
 
 
-def train_routes_from_city(br, city_dict, leaving_from_city):
+def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False):
 
     train_route_list = []
+
+    ipdp.set_trace()
 
 
     print "checking leaving from : " , leaving_from_city
