@@ -224,8 +224,10 @@ args = parser.parse_args()
 
 
 
-# use mechanize to open webpage.
-# code originally from http://www.pythonforbeginners.com/cheatsheet/python-mechanize-cheat-sheet
+"""use mechanize to open webpage.
+code originally from 
+http://www.pythonforbeginners.com/cheatsheet/python-mechanize-cheat-sheet
+"""
 
 br = mechanize.Browser()
 # br.set_all_readonly(False)    # allow everything to be written to
@@ -235,7 +237,7 @@ br.addheaders = [('User-agent', 'Firefox')]
 
 webpage = br.open(args.path)
 
-# set number of passengers as 1
+""" set number of passengers as 1 """
 
 set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
