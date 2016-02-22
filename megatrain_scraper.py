@@ -281,8 +281,9 @@ else:
     from_city = ""
     for city in city_dict:
         print city
-        if islower(city) == islower(args.from_city):
+        if lower(city) == lower(args.from_city):
             from_city = city
+            break
 
     if from_city == "":
     #if args.from_city not in city_dict:
