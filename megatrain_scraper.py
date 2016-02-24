@@ -276,7 +276,7 @@ else:
    
     print "Checking for trains leaving from " + from_city
 
-    train_routes = MegaRoutes()
+    train_routes = megaroute.MegaRoutes()
 
     train_routes_from_city(br, city_dict, from_city)
 
