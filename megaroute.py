@@ -2,7 +2,7 @@
 import ipdb
 
 
-class MegaRoute:
+class MegaRoutes:
     def __init__(self):
         self.route_list = []
 
