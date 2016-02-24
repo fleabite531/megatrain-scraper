@@ -25,7 +25,7 @@ class MegaRoutes:
 
 
     def AddRouteSchedule(self, fromcity, tocity, day, time):
-        """check if route already exists in list, else add it""
+        """check if route already exists in list, else add it"""
         self.index
 
 
