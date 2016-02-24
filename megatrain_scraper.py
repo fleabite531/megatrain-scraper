@@ -278,7 +278,19 @@ else:
 
     train_routes = megaroute.MegaRoutes()
 
-    train_routes_from_city(br, city_dict, from_city)
+    train_route_list = train_routes_from_city(br, city_dict, from_city)
+
+    for fromcity, tocity in train_route_list:
+        train_routes.AddRoute(fromcity, tocity)
+    
+    ipdb.set_trace()
+
+    for citypairs in train_routes:
+        print "Train leaving from %s going to %s" % (citypairs[0], citypairs[1])
+
+    ipdb.set_trace()
+
+
 
     """pre making MegaTrain class
     train_route_list = train_routes_from_city(br, city_dict, from_city)
