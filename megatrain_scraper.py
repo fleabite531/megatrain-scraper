@@ -27,6 +27,7 @@ add schedule flag to acquire schedule
 
 """
 
+import megaroute
 
 import sys
 import argparse
@@ -107,7 +108,6 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
 
     train_route_list = []
 
-    ipdb.set_trace()
 
 
     print "checking leaving from : " , leaving_from_city
@@ -276,7 +276,13 @@ else:
    
     print "Checking for trains leaving from " + from_city
 
+    train_routes = MegaRoutes()
+
+    train_routes_from_city(br, city_dict, from_city)
+
+    """pre making MegaTrain class
     train_route_list = train_routes_from_city(br, city_dict, from_city)
+    """
 
 
 
