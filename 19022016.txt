@@ -1,0 +1,22 @@
+Megatrains available on following routes 2016-02-23FROM : London TO : Axminster
+FROM : London TO : Bath Spa
+FROM : London TO : Bournemouth
+FROM : London TO : Bradford
+FROM : London TO : Bristol
+FROM : London TO : Chesterfield
+FROM : London TO : Derby
+FROM : London TO : Exeter
+FROM : London TO : Havant
+FROM : London TO : Honiton
+FROM : London TO : Huddersfield
+FROM : London TO : Hull
+FROM : London TO : Leicester
+FROM : London TO : Loughborough
+FROM : London TO : Nottingham
+FROM : London TO : Poole
+FROM : London TO : Portsmouth
+FROM : London TO : Salisbury
+FROM : London TO : Sheffield
+FROM : London TO : Southampton
+FROM : London TO : Weymouth
+FROM : London TO : Yeovil Junction
