@@ -11,7 +11,7 @@ class MegaSchedule:
 
     def __repr__(self):
         return_string = "%s - %s : " % (self.departuredatetime , self.arrivaltime)
-        return_string += ','.join([day for day in self.days])
+        return_string += ', '.join([day for day in self.days])
 
     def isSchedule(self, departuretime, arrivaltime):
         return departuretime==self.departuretime and \
@@ -28,10 +28,12 @@ class MegaSchedule:
 
 
 class MegaRoute:
-    def __init__(self, fromcity, tocity, day = "", time = ""):
+    def __init__(self, fromcity, tocity, departuretime=None, arrivaltime=None days = []):
         self.fromcity = fromcity
         self.tocity = tocity
         self.schedule = []
+        if departuretime:
+            self.schedule.append(MegaSchedule(departuretime, arrivaltime, days)
 
     def IsRoute(self, fromcity, tocity):
         if self.fromcity == fromcity and self.tocity == tocity:
@@ -40,7 +42,15 @@ class MegaRoute:
         return False
 
     def __repr__(self):
-        return "[%s -> %s]" % (self.fromcity, self.tocity)
+        return_string = "[%s -> %s]" % (self.fromcity, self.tocity)
+
+        if not len(self.schedule):
+            return_string += ": "
+            return_string += ", ".join([schedule for schedule in self.schedule])
+
+        return return_string
+
+
 
     
 
