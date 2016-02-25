@@ -27,7 +27,7 @@ class MegaRoutes:
 
     def ViewRoute(self, fromcity, tocity):
         for index in range(0, len(self.route_list)):
-            //if self.route_list[index][0] == fromcity and self.route_list[index][1] == tocity:
+            # if self.route_list[index][0] == fromcity and self.route_list[index][1] == tocity:
             if self.route_list[index].IsRoute(fromcity, tocity):
                 return self.route_list[index]
         
