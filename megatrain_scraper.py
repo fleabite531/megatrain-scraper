@@ -185,6 +185,22 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
 
 
 
+def getSchedule(leaving_from_city_number, travelling_to_city_number):
+
+    """
+    travelling_by_control = br.form.find_control("JourneyPlanner$ddlTravellingBy")
+
+    if "2" not in travelling_by_control.items:
+        raise ValueError("No train option on route")
+
+    travell_by_control.value = "2"
+    """
+
+
+    resultsurlstring = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&outboundDepartureDate=%s&passengerCount=1&transportType=2" % (leaving_from_city_number , travelling_to_city_number)
+
+
+
 
 
 
