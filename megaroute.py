@@ -1,16 +1,18 @@
 
 import ipdb
+import datetime
 
 
+"""departure and arrivaltimes should be datetime.time objects"""
 class MegaSchedule:
 
     def __init__(self, departuretime, arrivaltime, days,  duration=0, carrier="", schedule=[]):
-        self.departuredatetime = departuredatetime
-        self.arrivaldatetime = arrivaldatetime
+        self.departuretime = departuretime
+        self.arrivaltime = arrivaltime
         self.days = [days]
 
     def __repr__(self):
-        return_string = "%s - %s : " % (self.departuredatetime , self.arrivaltime)
+        return_string = "%s - %s : " % (self.departuretime , self.arrivaltime)
         return_string += ', '.join([day for day in self.days])
 
     def isSchedule(self, departuretime, arrivaltime):
@@ -23,6 +25,9 @@ class MegaSchedule:
 
     def addDay(self, day):
         self.days.append(day)
+
+    def returnSchedule(self):
+        return self.departuretime, self.arrivaltime, self.days
 
           
 
@@ -51,7 +56,19 @@ class MegaRoute:
         return return_string
 
 
+    def addSchedule(self, departuretime, arrivaltime, days=[]):
+        
+        self.schedule.append(MegaSchedule(departuretime, arrivaltime, days))
+        
 
+    def returnScheduleList(self):
+        return self.schedule
+
+    def returnRoute(self):
+        return self.fromcity, self.tocity, self.schedule
+
+    def __iter__(self):
+        return iter(self.schedule)
     
 
 
