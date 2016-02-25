@@ -283,7 +283,6 @@ else:
     for fromcity, tocity in train_route_list:
         train_routes.AddRoute(fromcity, tocity)
     
-    ipdb.set_trace()
 
     for route in train_routes:
         print "Train route : " , route
