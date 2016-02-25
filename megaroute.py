@@ -5,6 +5,7 @@ class MegaRoute:
     def __init__(self, fromcity, tocity, day = "", time = ""):
         self.fromcity = fromcity
         self.tocity = tocity
+        self.schedule = []
 
     def IsRoute(self, fromcity, tocity):
         if self.fromcity == fromcity and self.tocity == tocity:
@@ -13,12 +14,12 @@ class MegaRoute:
         return False
 
     def __repr__(self):
-        return "%s, %s" % (self.fromcity, self.tocity)
+        return "[%s -> %s]" % (self.fromcity, self.tocity)
 
 
 
 
-class MegaRoutes:
+class MegaRouteList:
     def __init__(self):
         self.route_list = []
 
@@ -42,11 +43,8 @@ class MegaRoutes:
         return len(self.route_list)
 
     def __repr__(self):
-        return_string = ""
-        for route in self.route_list:
-            return_string += str(route)
+        return '.'.join([str(route) for route in self.route_list])
 
-        return return_string
 
 
 
