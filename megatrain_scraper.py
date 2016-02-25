@@ -276,7 +276,7 @@ else:
    
     print "Checking for trains leaving from " + from_city
 
-    train_routes = megaroute.MegaRoutes()
+    train_routes = megaroute.MegaRouteList()
 
     train_route_list = train_routes_from_city(br, city_dict, from_city)
 
@@ -285,8 +285,8 @@ else:
     
     ipdb.set_trace()
 
-    for citypairs in train_routes:
-        print "Train leaving from %s going to %s" % (citypairs[0], citypairs[1])
+    for route in train_routes:
+        print "Train route : " , route
 
     ipdb.set_trace()
 
