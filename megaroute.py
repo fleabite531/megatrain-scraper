@@ -1,6 +1,20 @@
 
 import ipdb
 
+
+class MegaSchedule:
+
+    def __init__(self, departuretime, arrivaltime, days,  duration=0, carrier="", schedule=[]):
+        self.departuredatetime = departuredatetime
+        self.arrivaldatetime = arrivaldatetime
+        self.days = [days]
+
+    def __repr__(self):
+        return_string = "%s - %s : " % (self.departuredatetime , self.arrivaltime)
+        return_string += ','.join([day for day in self.days])
+          
+
+
 class MegaRoute:
     def __init__(self, fromcity, tocity, day = "", time = ""):
         self.fromcity = fromcity
