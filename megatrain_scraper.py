@@ -223,7 +223,13 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
         soup = BeautifulSoup(webpage_text)
 
-        ipdb.set_trace()
+        row_tag_list = soup.find_all(id="JourneyResylts_OutboundList_GridViewResults_ctl00_row_item")
+
+        for row_tag in row_tag_list:
+            two_tag = row_tag.find(class_="two")
+            
+            ipdb.set_trace()
+
 
 
 
