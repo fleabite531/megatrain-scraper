@@ -189,12 +189,12 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
 
 
 
-def getSchedule(leaving_from_city_number, travelling_to_city_number, days_to_check = 8):
+def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
 
 
     resulturlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=\
             %s&passengerCount=1&transportType=2&outboundDepartureDate=" % \
-            (leaving_from_city_number , travelling_to_city_number)
+            (city_dict[leaving_from_city] , city_dict[travelling_to_city])
 
     now = datetime.date.today()
 
@@ -338,7 +338,7 @@ else:
     """TESTING SCHEDULE NEW STUFF"""
 
 
-    getSchedule(city_dict[from_city],13)
+    getSchedule(from_city,"Bristol")
 
 
 
