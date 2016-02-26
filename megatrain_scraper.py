@@ -38,6 +38,8 @@ import mechanize
 
 from bs4 import BeautifulSoup
 
+import requests
+
 """set up names of form, control ids etc """
 
 FORMNAME = "ctl01"
@@ -201,21 +203,25 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
     now = datetime.date.today()
 
+    """ format of datestring is 24%2f03%2f2016 for 24th march 2016"""
+    dateformat = "%d%%2f%m%%2f%Y" 
+
     """trains are added to the booking screen from 36 days. so start checking from 28 days
     and keep checking for 7 days to cover a week. In future possibly will check for 
     2 weeks, so start from 22 days in case a partic week just has that train booked up
     already"""
 
-
-
     for i in range(28,35):
         day = now + datetime.timedelta(i)
-        """ format of datestring is 24%2f03%2f2016 for 24th march 2016"""
-        dateformat = "%d%%2f%m%%2f%Y" 
 
         datestring = day.strftime(dateformat)
 
         resulturlstring = resulturlstart + datestring
+
+
+        webpage_text = requests.get(resulturlstring).text
+
+        soup = BeautifulSoup(webpage_text)
 
         ipdb.set_trace()
 
