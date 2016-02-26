@@ -40,6 +40,8 @@ from bs4 import BeautifulSoup
 
 import requests
 
+import re
+
 """set up names of form, control ids etc """
 
 FORMNAME = "ctl01"
@@ -189,15 +191,6 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
 
 def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
-    """
-    travelling_by_control = br.form.find_control("JourneyPlanner$ddlTravellingBy")
-
-    if "2" not in travelling_by_control.items:
-        raise ValueError("No train option on route")
-
-    travell_by_control.value = "2"
-    """
-
 
     resulturlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&passengerCount=1&transportType=2&outboundDepartureDate=" % (leaving_from_city_number , travelling_to_city_number)
 
@@ -205,6 +198,8 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
     """ format of datestring is 24%2f03%2f2016 for 24th march 2016"""
     dateformat = "%d%%2f%m%%2f%Y" 
+
+    timere = re.compile("\\d\\d:\\d\\d")
 
     """trains are added to the booking screen from 36 days. so start checking from 28 days
     and keep checking for 7 days to cover a week. In future possibly will check for 
@@ -227,6 +222,8 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
         for row_tag in row_tag_list:
             two_tag = row_tag.find(class_="two")
+
+            timelist = timere.findall(str(two_tag))
             
             ipdb.set_trace()
 
