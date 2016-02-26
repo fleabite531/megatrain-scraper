@@ -33,7 +33,7 @@ class MegaSchedule:
 
 
 class MegaRoute:
-    def __init__(self, fromcity, tocity, departuretime=None, arrivaltime=None days = []):
+    def __init__(self, fromcity, tocity, departuretime=None, arrivaltime=None, days = []):
         self.fromcity = fromcity
         self.tocity = tocity
         self.schedule = []
