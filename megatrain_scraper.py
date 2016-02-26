@@ -197,7 +197,7 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
     """
 
 
-    resultsurlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&passengerCount=1&transportType=2&outboundDepartureDate=" % (leaving_from_city_number , travelling_to_city_number)
+    resulturlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&passengerCount=1&transportType=2&outboundDepartureDate=" % (leaving_from_city_number , travelling_to_city_number)
 
     now = datetime.date.today()
 
