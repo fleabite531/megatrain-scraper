@@ -40,7 +40,7 @@ class MegaRoute:
         if departuretime:
             self.schedule.append(MegaSchedule(departuretime, arrivaltime, days)
 
-    def IsRoute(self, fromcity, tocity):
+    def isRoute(self, fromcity, tocity):
         if self.fromcity == fromcity and self.tocity == tocity:
             return True
 
