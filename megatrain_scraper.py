@@ -199,7 +199,7 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
     resultsurlstring = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&outboundDepartureDate=%s&passengerCount=1&transportType=2" % (leaving_from_city_number , travelling_to_city_number)
 
-
+    ipdb.set_trace()
 
 
 
@@ -293,6 +293,23 @@ else:
     print "Checking for trains leaving from " + from_city
 
     train_routes = megaroute.MegaRouteList()
+
+
+
+    """TESTING SCHEDULE NEW STUFF"""
+
+
+    getSchedule(city_dict[from_city],13)
+
+
+
+
+    sys.exit()
+    """END TESTING SCHEDULE"""
+
+
+
+
 
     train_route_list = train_routes_from_city(br, city_dict, from_city)
 
