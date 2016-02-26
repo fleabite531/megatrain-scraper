@@ -201,6 +201,8 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
     timere = re.compile("\\d\\d:\\d\\d")
 
+    schedulelist = []
+
     """trains are added to the booking screen from 36 days. so start checking from 28 days
     and keep checking for 7 days to cover a week. In future possibly will check for 
     2 weeks, so start from 22 days in case a partic week just has that train booked up
@@ -224,11 +226,16 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
             two_tag = row_tag.find(class_="two")
 
             timelist = timere.findall(str(two_tag))
+
+            schedulelist.append(timelist)
+
+
             
             ipdb.set_trace()
 
 
 
+    print schedulelist
 
 
 
