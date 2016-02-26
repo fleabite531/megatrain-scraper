@@ -220,7 +220,8 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
         soup = BeautifulSoup(webpage_text)
 
-        row_tag_list = soup.find_all(id="JourneyResylts_OutboundList_GridViewResults_ctl00_row_item")
+        row_tag_list = soup.find_all(id=\
+                re.compile("JourneyResylts_OutboundList_GridViewResults_ctl\d\d_row_item"))
 
         for row_tag in row_tag_list:
             two_tag = row_tag.find(class_="two")
@@ -235,7 +236,6 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
 
 
-    print schedulelist
 
 
 
