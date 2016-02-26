@@ -189,10 +189,12 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
 
 
 
-def getSchedule(leaving_from_city_number, travelling_to_city_number):
+def getSchedule(leaving_from_city_number, travelling_to_city_number, days_to_check = 8):
 
 
-    resulturlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&passengerCount=1&transportType=2&outboundDepartureDate=" % (leaving_from_city_number , travelling_to_city_number)
+    resulturlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=\
+            %s&passengerCount=1&transportType=2&outboundDepartureDate=" % \
+            (leaving_from_city_number , travelling_to_city_number)
 
     now = datetime.date.today()
 
@@ -208,13 +210,17 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
     2 weeks, so start from 22 days in case a partic week just has that train booked up
     already"""
 
-    for i in range(28,35):
+    for i in range(36 - days_to_check ,36):
+
         day = now + datetime.timedelta(i)
+
+        weekday = day.strftime("%A")
 
         datestring = day.strftime(dateformat)
 
         resulturlstring = resulturlstart + datestring
 
+        ipdb.set_trace()
 
         webpage_text = requests.get(resulturlstring).text
 
@@ -232,8 +238,6 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
 
             
-            ipdb.set_trace()
-
 
 
 
