@@ -199,7 +199,17 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
     resultsurlstring = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&passengerCount=1&transportType=2&outboundDepartureDate=" % (leaving_from_city_number , travelling_to_city_number)
 
-    ipdb.set_trace()
+    now = datetime.date.today()
+
+    """trains are added to the booking screen from 36 days. so start checking from 28 days
+    and keep checking for 7 days to cover a week. In future possibly will check for 
+    2 weeks, so start from 22 days in case a partic week just has that train booked up
+    already"""
+
+    day = now + datetime.timedelta(28)
+
+    ipd.set_trace()
+
 
 
 
