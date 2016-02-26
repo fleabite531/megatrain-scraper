@@ -211,7 +211,7 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
     for i in range(28,35):
         day = now + datetime.timedelta(i)
         """ format of datestring is 24%2f03%2f2016 for 24th march 2016"""
-        dateformat = "%d\%2f%m\%2f%Y" 
+        dateformat = "%d%%2f%m%%2f%Y" 
 
         datestring = day.strftime(dateformat)
 
