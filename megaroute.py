@@ -26,7 +26,11 @@ class MegaSchedule:
 
 
     def addDay(self, day):
-        self.days.append(day)
+        if not day in self.days:
+            self.days.append(day)
+            return True
+
+        return False
 
     def returnSchedule(self):
         return self.departuretime, self.arrivaltime, self.days
