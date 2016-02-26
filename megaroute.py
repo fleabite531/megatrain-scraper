@@ -15,6 +15,8 @@ class MegaSchedule:
         return_string = "%s - %s : " % (self.departuretime , self.arrivaltime)
         return_string += ', '.join([day for day in self.days])
 
+        return return_string
+
     def isSchedule(self, departuretime, arrivaltime):
         return departuretime==self.departuretime and \
                 arrivaltime == self.arrivaltime
@@ -38,9 +40,10 @@ class MegaRoute:
         self.tocity = tocity
         self.schedule = []
         if departuretime:
-            self.schedule.append(MegaSchedule(departuretime, arrivaltime, days)
+            self.schedule.append(MegaSchedule(departuretime, arrivaltime, days))
 
     def isRoute(self, fromcity, tocity):
+
         if self.fromcity == fromcity and self.tocity == tocity:
             return True
 
