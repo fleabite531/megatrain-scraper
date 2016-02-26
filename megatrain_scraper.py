@@ -197,7 +197,7 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
     """
 
 
-    resultsurlstring = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&passengerCount=1&transportType=2&outboundDepartureDate=" % (leaving_from_city_number , travelling_to_city_number)
+    resultsurlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=%s&passengerCount=1&transportType=2&outboundDepartureDate=" % (leaving_from_city_number , travelling_to_city_number)
 
     now = datetime.date.today()
 
@@ -206,9 +206,18 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
     2 weeks, so start from 22 days in case a partic week just has that train booked up
     already"""
 
-    day = now + datetime.timedelta(28)
 
-    ipdb.set_trace()
+
+    for i in range(28,35):
+        day = now + datetime.timedelta(i)
+        """ format of datestring is 24%2f03%2f2016 for 24th march 2016"""
+        dateformat = "%d\%2f%m\%2f%Y" 
+
+        datestring = day.strftime(dateformat)
+
+        resulturlstring = resulturlstart + datestring
+
+        ipdb.set_trace()
 
 
 
