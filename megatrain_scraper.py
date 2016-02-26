@@ -208,7 +208,7 @@ def getSchedule(leaving_from_city_number, travelling_to_city_number):
 
     day = now + datetime.timedelta(28)
 
-    ipd.set_trace()
+    ipdb.set_trace()
 
 
 
