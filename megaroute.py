@@ -2,9 +2,11 @@
 import ipdb
 import datetime
 
+import time
+
 
 """departure and arrivaltimes should be datetime.time objects"""
-class MegaSchedule:
+class OLDMegaSchedule:
 
     def __init__(self, departuretime, arrivaltime, days,  duration=0, carrier="", schedule=[]):
         self.departuretime = departuretime
@@ -38,6 +40,42 @@ class MegaSchedule:
           
 
 
+"""departure and arrivaltimes should be datetime.time objects"""
+class MegaSchedule:
+
+    def __init__(self, day, departuretime, arrivaltime, duration=0, carrier="", schedule=[]):
+        self.departuretime = departuretime
+        self.arrivaltime = arrivaltime
+        self.day = day
+
+    def __repr__(self):
+        return "%s : %s - %s" % (self.day, \
+                self.departuretime.strftime("%H:%M") , self.arrivaltime)
+
+
+    def __eq__(self, other):
+        return other.departuretime==self.departuretime and \
+                other.arrivaltime == self.arrivaltime and \
+                other.day == self.day
+
+    def __lt__(self, other):
+        if self.day != other.day:
+            return self.day < other.day
+
+        if self.arrivaltime != other.arrivaltime:
+            return self.arrivaltime < other.arrivaltime
+
+        return self.departuretime < other.departuretime
+
+
+
+
+    def returnSchedule(self):
+        return self.day, self.departuretime, self.arrivaltime
+
+          
+
+
 class MegaRoute:
     def __init__(self, fromcity, tocity, departuretime=None, arrivaltime=None, days = []):
         self.fromcity = fromcity
@@ -62,8 +100,13 @@ class MegaRoute:
 
         return return_string
 
+    def isSchedule(self, departuretime, arrivaltime):
+        for schedule in self.schedule:
+            print ""
+
 
     def addSchedule(self, departuretime, arrivaltime, days=[]):
+
         
         self.schedule.append(MegaSchedule(departuretime, arrivaltime, days))
         

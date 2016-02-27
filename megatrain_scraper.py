@@ -34,6 +34,8 @@ import argparse
 import ipdb
 import datetime
 
+import time
+
 import mechanize
 
 from bs4 import BeautifulSoup
@@ -214,13 +216,11 @@ def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
 
         day = now + datetime.timedelta(i)
 
-        weekday = day.strftime("%A")
+        weekday = day.strftime("%w")
 
         datestring = day.strftime(dateformat)
 
         resulturlstring = resulturlstart + datestring
-
-        ipdb.set_trace()
 
         webpage_text = requests.get(resulturlstring).text
 
@@ -234,9 +234,14 @@ def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
 
             timelist = timere.findall(str(two_tag))
 
-            schedulelist.append(timelist)
+            schedule = megaroute.MegaSchedule(weekday , \
+                    time.strptime(timelist[0], "%H:%M"), \
+                    time.strptime(timelist[1], "%H:%M"))
+
+            schedulelist.append(schedule)
 
 
+    return schedulelist
             
 
 
@@ -338,8 +343,10 @@ else:
     """TESTING SCHEDULE NEW STUFF"""
 
 
-    getSchedule(from_city,"Bristol")
+    schedulelist = getSchedule(from_city,"Bristol")
 
+
+    print schedulelist
 
 
 
