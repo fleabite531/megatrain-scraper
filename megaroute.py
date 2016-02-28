@@ -4,7 +4,7 @@ import datetime
 
 import time
 
-weekday = {0:"Monday" , 1:"Tuesday" , 2:"Wednesday" , 3:"Thursday" , 4:"Friday" , \
+weekdayDict = {0:"Monday" , 1:"Tuesday" , 2:"Wednesday" , 3:"Thursday" , 4:"Friday" , \
         5: "Saturday" , 6:"Sunday"}
 
 
@@ -43,7 +43,10 @@ class OLDMegaSchedule:
           
 
 
-"""departure and arrivaltimes should be datetime.time objects"""
+"""departure and arrivaltimes should be datetime.time objects
+day should be an int 0-6, 0 being Monday, 6 being Sunday
+"""
+
 class MegaSchedule:
 
     def __init__(self, day, departuretime, arrivaltime, duration=0, carrier="", schedule=[]):
@@ -52,7 +55,7 @@ class MegaSchedule:
         self.day = day
 
     def __repr__(self):
-        return "%s : %s - %s" % (weekday[int(self.day)], \
+        return "%s : %s - %s" % (weekdayDict[self.day], \
                 time.strftime("%H:%M", self.departuretime) , \
                 time.strftime("%H:%M", self.arrivaltime))
 
@@ -71,7 +74,14 @@ class MegaSchedule:
 
         return self.departuretime < other.departuretime
 
+    def __gt__(self, other):
+        if self.day != other.day:
+            return self.day > other.day
 
+        if self.departuretime != other.departuretime:
+            return self.departuretime > other.departuretime
+
+        return self.arrivaltime > other.arrivaltime
 
 
     def returnSchedule(self):
@@ -81,77 +91,80 @@ class MegaSchedule:
 
 
 class MegaRoute:
-    def __init__(self, fromcity, tocity, departuretime=None, arrivaltime=None, days = []):
-        self.fromcity = fromcity
-        self.tocity = tocity
-        self.schedule = []
+    def __init__(self, fromcity, tocity, schedule=None, departuretime=None, arrivaltime=None, days = []):
+        self._fromcity = fromcity
+        self._tocity = tocity
+        self._schedule = []
         if departuretime:
-            self.schedule.append(MegaSchedule(departuretime, arrivaltime, days))
+            self._schedule.append(MegaSchedule(departuretime, arrivaltime, days))
+
+        if schedule:
+            self._schedule.append(schedule)
 
     def isRoute(self, fromcity, tocity):
 
-        if self.fromcity == fromcity and self.tocity == tocity:
+        if self._fromcity == fromcity and self._tocity == tocity:
             return True
 
         return False
 
     def __repr__(self):
-        return_string = "[%s -> %s]" % (self.fromcity, self.tocity)
+        return_string = "[%s -> %s]" % (self._fromcity, self._tocity)
 
-        if not len(self.schedule):
+        if not len(self._schedule):
             return_string += ": "
-            return_string += ", ".join([schedule for schedule in self.schedule])
+            return_string += ", ".join([schedule for schedule in self._schedule])
 
         return return_string
 
     def isSchedule(self, departuretime, arrivaltime):
-        for schedule in self.schedule:
+        for schedule in self._schedule:
             print ""
 
 
     def addSchedule(self, departuretime, arrivaltime, days=[]):
 
         
-        self.schedule.append(MegaSchedule(departuretime, arrivaltime, days))
+        self._schedule.append(MegaSchedule(departuretime, arrivaltime, days))
         
 
     def returnScheduleList(self):
-        return self.schedule
+        return self._schedule
 
     def returnRoute(self):
-        return self.fromcity, self.tocity, self.schedule
+        return self._fromcity, self._tocity, self._schedule
 
     def __iter__(self):
-        return iter(self.schedule)
+        return iter(self._schedule)
     
 
 
 
 class MegaRouteList:
     def __init__(self):
-        self.route_list = []
+        self._route_list = []
 
     def AddRoute(self, fromcity, tocity):
-        self.route_list.append(MegaRoute(fromcity, tocity))
+        self._route_list.append(MegaRoute(fromcity, tocity))
 
     def ViewRoute(self, fromcity, tocity):
-        for index in range(0, len(self.route_list)):
+        for index in range(0, len(self._route_list)):
             # if self.route_list[index][0] == fromcity and self.route_list[index][1] == tocity:
-            if self.route_list[index].IsRoute(fromcity, tocity):
-                return self.route_list[index]
+            if self._route_list[index].IsRoute(fromcity, tocity):
+                return self._route_list[index]
         
         return None
     
 
 
     def __iter__(self):
-        return iter(self.route_list)
+        return iter(self._route_list)
 
     def __len__(self):
-        return len(self.route_list)
+        return len(self._route_list)
 
     def __repr__(self):
-        return '.'.join([str(route) for route in self.route_list])
+        return '.'.join([str(route) for route in self._route_list])
 
 
 
@@ -161,8 +174,8 @@ class MegaRouteList:
 
         need_to_add = True
 
-        for index in range(0, len(self.route_list)):
-            if self.route_list[index][0] == fromcity and self.route_list[index][1] == tocity:
+        for index in range(0, len(self._route_list)):
+            if self._route_list[index][0] == fromcity and self._route_list[index][1] == tocity:
                 need_to_add = False
                 break
 
