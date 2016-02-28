@@ -50,42 +50,42 @@ day should be an int 0-6, 0 being Monday, 6 being Sunday
 class MegaSchedule:
 
     def __init__(self, day, departuretime, arrivaltime, duration=0, carrier="", schedule=[]):
-        self.departuretime = departuretime
-        self.arrivaltime = arrivaltime
-        self.day = day
+        self._departuretime = departuretime
+        self._arrivaltime = arrivaltime
+        self._day = day
 
     def __repr__(self):
-        return "%s : %s - %s" % (weekdayDict[self.day], \
-                time.strftime("%H:%M", self.departuretime) , \
-                time.strftime("%H:%M", self.arrivaltime))
+        return "%s : %s - %s" % (weekdayDict[self._day], \
+                time.strftime("%H:%M", self._departuretime) , \
+                time.strftime("%H:%M", self._arrivaltime))
 
 
     def __eq__(self, other):
-        return other.departuretime==self.departuretime and \
-                other.arrivaltime == self.arrivaltime and \
-                other.day == self.day
+        return other._departuretime==self._departuretime and \
+                other._arrivaltime == self._arrivaltime and \
+                other._day == self._day
 
     def __lt__(self, other):
-        if self.day != other.day:
-            return self.day < other.day
+        if self._day != other._day:
+            return self._day < other._day
 
-        if self.arrivaltime != other.arrivaltime:
-            return self.arrivaltime < other.arrivaltime
+        if self._arrivaltime != other._arrivaltime:
+            return self._arrivaltime < other._arrivaltime
 
-        return self.departuretime < other.departuretime
+        return self._departuretime < other._departuretime
 
     def __gt__(self, other):
-        if self.day != other.day:
-            return self.day > other.day
+        if self._day != other._day:
+            return self._day > other._day
 
-        if self.departuretime != other.departuretime:
-            return self.departuretime > other.departuretime
+        if self._departuretime != other._departuretime:
+            return self._departuretime > other._departuretime
 
-        return self.arrivaltime > other.arrivaltime
+        return self._arrivaltime > other._arrivaltime
 
 
     def returnSchedule(self):
-        return self.day, self.departuretime, self.arrivaltime
+        return self._day, self._departuretime, self._arrivaltime
 
           
 
