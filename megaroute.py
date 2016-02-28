@@ -4,6 +4,9 @@ import datetime
 
 import time
 
+weekday{0:"Monday" , 1:"Tuesday" , 2:"Wednesday" , 3:"Thursday" , 4:"Friday" , \
+        5: "Saturday" , 6:"Sunday"}
+
 
 """departure and arrivaltimes should be datetime.time objects"""
 class OLDMegaSchedule:
@@ -49,7 +52,7 @@ class MegaSchedule:
         self.day = day
 
     def __repr__(self):
-        return "%s : %s - %s" % (self.day, \
+        return "%s : %s - %s" % (weekday[self.day], \
                 time.strftime("%H:%M", self.departuretime) , \
                 time.strftime("%H:%M", self.arrivaltime))
 
