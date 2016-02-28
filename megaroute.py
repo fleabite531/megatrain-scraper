@@ -52,7 +52,7 @@ class MegaSchedule:
         self.day = day
 
     def __repr__(self):
-        return "%s : %s - %s" % (weekday[self.day], \
+        return "%s : %s - %s" % (weekday[int(self.day)], \
                 time.strftime("%H:%M", self.departuretime) , \
                 time.strftime("%H:%M", self.arrivaltime))
 
