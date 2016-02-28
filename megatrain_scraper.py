@@ -216,7 +216,9 @@ def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
 
         day = now + datetime.timedelta(i)
 
-        weekday = day.strftime("%w")
+        """strftime %w uses clearly incorrect ;) 0 as Sunday"""
+
+        weekday = int(day.strftime("%w")) - 1
 
         datestring = day.strftime(dateformat)
 
