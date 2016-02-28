@@ -49,9 +49,9 @@ class MegaSchedule:
         self.day = day
 
     def __repr__(self):
-        ipdb.set_trace()
         return "%s : %s - %s" % (self.day, \
-                self.departuretime.strftime("%H:%M") , self.arrivaltime)
+                time.strftime("%H:%M", self.departuretime) , \
+                time.strftime("%H:%M", self.arrivaltime))
 
 
     def __eq__(self, other):
