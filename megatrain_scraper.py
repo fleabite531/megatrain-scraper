@@ -248,10 +248,6 @@ def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
 
 
 
-if __name__ == "__main__":
-    main()
-
-
 def main():
 
 
@@ -387,4 +383,7 @@ def main():
 
 
 
+
+if __name__ == "__main__":
+    main()
 
