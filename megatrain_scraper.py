@@ -365,7 +365,7 @@ def main():
 
 
     if args.get_schedule:
-        for fromcity , tocity in train_routes
+        for fromcity , tocity in train_routes:
             ipdb.set_trace()
             schedulelist = getSchedule(from_city, to_city)
 
