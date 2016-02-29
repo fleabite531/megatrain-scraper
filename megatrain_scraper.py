@@ -248,149 +248,142 @@ def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
 
 
 
+if __name__ == "__main__":
+    main()
+
+
+def main():
+
+
+    """ get path either as file or url and open contents into webpage_text as string"""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", help="path to file or url to process")
+    parser.add_argument("output", help="output file")
+    parser.add_argument("--from-city", help="optional field if only want to check leaving 
+            from a specific city")
+
+    parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names
+            and exit", action="store_true", default=False)
+
+    parser.add_argument("--get-schedule", help="Get schedule as well as route list",
+            action="store_true", default=False)
+
+
+
+    args = parser.parse_args()
 
 
 
 
-""" MAIN starts here """
-
-""" get path either as file or url and open contents into webpage_text as string"""
-
-parser = argparse.ArgumentParser()
-parser.add_argument("path", help="path to file or url to process")
-parser.add_argument("output", help="output file")
-parser.add_argument("--from-city", help="optional field if only want to check leaving \
-        from a specific city")
-
-parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names\
-        and exit", action="store_true", default=False)
-
-
-args = parser.parse_args()
-
-
-
-
-"""use mechanize to open webpage.
-code originally from 
-http://www.pythonforbeginners.com/cheatsheet/python-mechanize-cheat-sheet
-"""
-
-br = mechanize.Browser()
-# br.set_all_readonly(False)    # allow everything to be written to
-br.set_handle_robots(False)   # ignore robots
-br.set_handle_refresh(False)  # can sometimes hang without this
-br.addheaders = [('User-agent', 'Firefox')]
-
-webpage = br.open(args.path)
-
-""" set number of passengers as 1 """
-
-set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
-
-
-
-response = br.submit()
-
-
-"""create dictionary for all the cities from the leaving from cities"""
-
-
-
-city_dict = create_city_dict(br)
-
-""" if valid_cities argument, then just print valid cities and exit"""
-
-if args.print_valid_cities:
-    print "Valid cities are : "
-    for city in sorted(city_dict.keys()):
-        print city
-    sys.exit()
-
-
-
-train_route_list = []
-
-""" reopen page in order to clear country field as its optional but defines leaving_from"""
-
-webpage = br.open(args.path)
-
-
-"""if from defined, then set that as city, check if from is valid, else exit
-else iterate through whole list 
-"""
-
-if args.from_city is None:
-    for leaving_from_city in city_dict:
-        train_route_list += train_routes_from_city(br, city_dict, leaving_from_city)
-
-else:
-
-    from_city = ""
-    for city in city_dict:
-        if city.lower() == args.from_city.lower():
-            from_city = city
-            break
-
-    if from_city == "":
-        sys.exit("Error %s not valid city. Use --print-cities option to see list of \
-                city options." % (args.from_city))
-   
-    print "Checking for trains leaving from " + from_city
-
-    train_routes = megaroute.MegaRouteList()
-
-
-
-    """TESTING SCHEDULE NEW STUFF"""
-
-
-    schedulelist = getSchedule(from_city,"Bristol")
-
-
-    print schedulelist
-
-
-
-    sys.exit()
-    """END TESTING SCHEDULE"""
-
-
-
-
-
-    train_route_list = train_routes_from_city(br, city_dict, from_city)
-
-    for fromcity, tocity in train_route_list:
-        train_routes.AddRoute(fromcity, tocity)
-    
-
-    for route in train_routes:
-        print "Train route : " , route
-
-    ipdb.set_trace()
-
-
-
-    """pre making MegaTrain class
-    train_route_list = train_routes_from_city(br, city_dict, from_city)
+    """use mechanize to open webpage.
+    code originally from 
+    http://www.pythonforbeginners.com/cheatsheet/python-mechanize-cheat-sheet
     """
 
+    br = mechanize.Browser()
+    # br.set_all_readonly(False)    # allow everything to be written to
+    br.set_handle_robots(False)   # ignore robots
+    br.set_handle_refresh(False)  # can sometimes hang without this
+    br.addheaders = [('User-agent', 'Firefox')]
+
+    webpage = br.open(args.path)
+
+    """ set number of passengers as 1 """
+
+    set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
+
+
+
+    response = br.submit()
+
+
+    """create dictionary for all the cities from the leaving from cities"""
+
+
+
+    city_dict = create_city_dict(br)
+
+    """ if valid_cities argument, then just print valid cities and exit"""
+
+    if args.print_valid_cities:
+        print "Valid cities are : "
+        for city in sorted(city_dict.keys()):
+            print city
+        sys.exit()
+
+
+
+    train_route_list = []
+
+    """ reopen page in order to clear country field as its optional but defines leaving_from"""
+
+    webpage = br.open(args.path)
+
+
+    """if from defined, then set that as city, check if from is valid, else exit
+    else iterate through whole list 
+    """
+
+    if args.from_city is None:
+        for leaving_from_city in city_dict:
+            train_route_list += train_routes_from_city(br, city_dict, leaving_from_city)
+
+    else:
+
+        from_city = ""
+        for city in city_dict:
+            if city.lower() == args.from_city.lower():
+                from_city = city
+                break
+
+        if from_city == "":
+            sys.exit("Error %s not valid city. Use --print-cities option to see list of \
+                    city options." % (args.from_city))
+       
+        print "Checking for trains leaving from " + from_city
+
+        train_routes = megaroute.MegaRouteList()
+
+        train_route_list = train_routes_from_city(br, city_dict, from_city)
+
+        for fromcity, tocity in train_route_list:
+            train_routes.AddRoute(fromcity, tocity)
+        
+
+        for route in train_routes:
+            print "Train route : " , route
+
+        ipdb.set_trace()
+
+
+
+        """pre making MegaTrain class
+        train_route_list = train_routes_from_city(br, city_dict, from_city)
+        """
+
+
+
+    if args.get_schedule:
+        for fromcity , tocity in train_routes
+            ipdb.set_trace()
+            schedulelist = getSchedule(from_city, to_city)
 
 
 
 
 
 
-for city_pairs in train_route_list:
-    print "Train available leaving from %s travelling to %s" % (city_pairs[0],city_pairs[1])
 
-
-
-with open(args.output, "w+") as f:
-    f.write("Megatrains available on following routes " + str(datetime.date.today()))
     for city_pairs in train_route_list:
-        f.write("FROM : " + city_pairs[0] + " TO : " + city_pairs[1] + "\n")
+        print "Train available leaving from %s travelling to %s" % (city_pairs[0],city_pairs[1])
+
+
+
+    with open(args.output, "w+") as f:
+        f.write("Megatrains available on following routes " + str(datetime.date.today()))
+        for city_pairs in train_route_list:
+            f.write("FROM : " + city_pairs[0] + " TO : " + city_pairs[1] + "\n")
 
 
 
