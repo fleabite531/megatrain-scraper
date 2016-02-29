@@ -259,7 +259,7 @@ def main():
     parser.add_argument("--from-city", help="optional field if only want to check leaving "
             "from a specific city")
 
-    parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names"
+    parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names "
             "and exit", action="store_true", default=False)
 
     parser.add_argument("--get-schedule", help="Get schedule as well as route list",
