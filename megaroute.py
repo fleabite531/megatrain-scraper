@@ -156,6 +156,10 @@ class MegaRouteList:
         return None
     
 
+    def __getitem__(self, key):
+        return self._route_list[key]
+
+
 
     def __iter__(self):
         return iter(self._route_list)
