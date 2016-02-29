@@ -110,7 +110,7 @@ def create_city_dict(br):
 
 
 
-def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False):
+def train_routes_from_city(br, path, city_dict, leaving_from_city, get_schedule=False):
 
     train_route_list = []
 
@@ -149,7 +149,7 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
 
         print "travelling to : ", travelling_to_city
 
-        webpage = br.open(args.path)
+        webpage = br.open(path)
         set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
         set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
@@ -323,7 +323,7 @@ def main():
 
     if args.from_city is None:
         for leaving_from_city in city_dict:
-            train_route_list += train_routes_from_city(br, city_dict, leaving_from_city)
+            train_route_list += train_routes_from_city(br, args.path, city_dict, leaving_from_city)
 
     else:
 
@@ -341,7 +341,7 @@ def main():
 
         train_routes = megaroute.MegaRouteList()
 
-        train_route_list = train_routes_from_city(br, city_dict, from_city)
+        train_route_list = train_routes_from_city(br, args.path, city_dict, from_city)
 
         for fromcity, tocity in train_route_list:
             train_routes.AddRoute(fromcity, tocity)
