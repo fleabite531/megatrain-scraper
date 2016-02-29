@@ -54,7 +54,7 @@ NUMPASSENGERSCONTROLID = "JourneyPlanner$txtNumberOfPassengers"
 
 
 
-def set_text_field(formname, controlid, input):
+def set_text_field(br, formname, controlid, input):
 
     br.select_form(formname) 
 
@@ -65,7 +65,7 @@ def set_text_field(formname, controlid, input):
 
     return control
 
-def set_dropdown_control(formname, controlid, input):
+def set_dropdown_control(br, formname, controlid, input):
 
     br.select_form(formname) 
 
@@ -119,9 +119,9 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
     print "checking leaving from : " , leaving_from_city
 
 
-    set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
+    set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
-    set_dropdown_control(FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+    set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
 
 
     response = br.submit()
@@ -150,9 +150,9 @@ def train_routes_from_city(br, city_dict, leaving_from_city, get_schedule=False)
         print "travelling to : ", travelling_to_city
 
         webpage = br.open(args.path)
-        set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
+        set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
-        set_dropdown_control(FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+        set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
 
 
         response = br.submit()
@@ -287,7 +287,7 @@ def main():
 
     """ set number of passengers as 1 """
 
-    set_text_field(FORMNAME, NUMPASSENGERSCONTROLID, "1")
+    set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
 
 
