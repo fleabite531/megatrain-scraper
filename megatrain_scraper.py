@@ -256,7 +256,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("path", help="path to file or url to process")
     parser.add_argument("output", help="output file")
-    parser.add_argument("--from-city", help="optional field if only want to check leaving "
+    parser.add_argument("--from-city", "-f", help="optional field if only want to check leaving "
             "from a specific city")
 
     parser.add_argument("--print-valid-cities", "-p", help="Print a list of valid city names "
