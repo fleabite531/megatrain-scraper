@@ -149,6 +149,12 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city):
         """
 
         """TODO change all below to use the functions"""
+
+        set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+        set_dropdown_control(br, FORMNAME, TRAVELLINGTOCONTROLID, city_dict[travelling_to_city])
+
+
+        """
         br.select_form(FORMNAME)
         leaving_from_control = br.form.find_control(LEAVINGFROMCONTROLID)
         leaving_from_control.readonly = False
@@ -161,6 +167,7 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city):
         leaving_from_control.value = [str(city_dict[leaving_from_city])]
 
         travelling_to_control.value = [str(city_dict[travelling_to_city])]
+        """
 
         response = br.submit()
         br.select_form(FORMNAME)
