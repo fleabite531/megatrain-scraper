@@ -53,6 +53,7 @@ TRAVELLINGTOCONTROLID = "JourneyPlanner$ddlTravellingTo"
 NUMPASSENGERSCONTROLID = "JourneyPlanner$txtNumberOfPassengers"
 
 
+"""TODO combine 2 below into single function"""
 
 def set_text_field(br, formname, controlid, input):
 
@@ -77,10 +78,7 @@ def set_dropdown_control(br, formname, controlid, input):
     return control
 
 
-
-
 def create_city_dict(br):
-
 
     city_dict = {}
 
@@ -103,33 +101,25 @@ def create_city_dict(br):
             if int(item.name) > 0:
                 city_dict[item.attrs["label"]] = item.name
     
-
     return city_dict
 
 
-
-
-
-def train_routes_from_city(br, path, city_dict, leaving_from_city, get_schedule=False):
+def train_routes_from_city(br, path, city_dict, leaving_from_city):
 
     train_route_list = []
 
-
-
     print "checking leaving from : " , leaving_from_city
 
-
     set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
-
     set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-
-
     response = br.submit()
 
     """ iterate through the travelling to cities in the dropdown that results from 
     submitting each of the leaving from cities
     """
 
+    """TODO change below to function but make input blank"""
+   
     br.select_form(FORMNAME) 
     travelling_to_control = br.form.find_control(TRAVELLINGTOCONTROLID)
     travelling_to_control.readonly = False
@@ -138,12 +128,16 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city, get_schedule=
     """ create list from travelling to dropdown that only includes cities in mainland GB
     """
 
+    travelling_to_city_list = ( [travelling_to_city_tag.attrs['label'] 
+            for travelling_to_city_tag in travelling_to_control.items 
+            if travelling_to_city_tag.attrs['label'] in city_dict] )
 
+    """ TODO check above format works and if so delete below"""
+    """
     travelling_to_city_list = [travelling_to_city_tag.attrs['label'] \
             for travelling_to_city_tag in travelling_to_control.items \
             if travelling_to_city_tag.attrs['label'] in city_dict]
-
-
+    """
 
     for travelling_to_city in travelling_to_city_list:
 
@@ -151,10 +145,7 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city, get_schedule=
 
         webpage = br.open(path)
         set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
-
         set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-
-
         response = br.submit()
 
         """ above needed to be done in order to refresh the travelling to dropdown before
@@ -163,6 +154,7 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city, get_schedule=
         though it looks redundant
         """
 
+        """TODO change all below to use the functions"""
         br.select_form(FORMNAME)
         leaving_from_control = br.form.find_control(LEAVINGFROMCONTROLID)
         leaving_from_control.readonly = False
@@ -179,20 +171,18 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city, get_schedule=
         response = br.submit()
         br.select_form(FORMNAME)
         travelling_by_control = br.form.find_control("JourneyPlanner$ddlTravellingBy")
+
+        """TODO just do an if ... in ... """
         for travelling_by_item in travelling_by_control.items:
             if travelling_by_item.name == "2":  # train
                 print "TRAIN ON ROUTE %s to %s " % (leaving_from_city , travelling_to_city)
 
                 train_route_list.append([leaving_from_city , travelling_to_city])
 
-
-
     return train_route_list
 
 
-
 def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
-
 
     resulturlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=\
             %s&passengerCount=1&transportType=2&outboundDepartureDate=" % \
@@ -265,12 +255,7 @@ def main():
     parser.add_argument("--get-schedule", help="Get schedule as well as route list",
             action="store_true", default=False)
 
-
-
     args = parser.parse_args()
-
-
-
 
     """use mechanize to open webpage.
     code originally from 
@@ -289,14 +274,10 @@ def main():
 
     set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
-
-
     response = br.submit()
 
 
     """create dictionary for all the cities from the leaving from cities"""
-
-
 
     city_dict = create_city_dict(br)
 
@@ -307,7 +288,6 @@ def main():
         for city in sorted(city_dict.keys()):
             print city
         sys.exit()
-
 
 
     train_route_list = []
@@ -345,42 +325,30 @@ def main():
 
         for fromcity, tocity in train_route_list:
             train_routes.AddRoute(fromcity, tocity)
-        
 
         for route in train_routes:
             print "Train route : " , route
 
         ipdb.set_trace()
 
-
-
         """pre making MegaTrain class
         train_route_list = train_routes_from_city(br, city_dict, from_city)
         """
 
-
-
     if args.get_schedule:
-        for fromcity , tocity in train_routes:
+        for route in train_routes:
             ipdb.set_trace()
+            from_city, to_city = route.returnRoute()
             schedulelist = getSchedule(from_city, to_city)
-
-
-
-
-
 
 
     for city_pairs in train_route_list:
         print "Train available leaving from %s travelling to %s" % (city_pairs[0],city_pairs[1])
 
-
-
     with open(args.output, "w+") as f:
         f.write("Megatrains available on following routes " + str(datetime.date.today()))
         for city_pairs in train_route_list:
             f.write("FROM : " + city_pairs[0] + " TO : " + city_pairs[1] + "\n")
-
 
 
 
