@@ -132,6 +132,8 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city):
             for travelling_to_city_tag in travelling_to_control.items 
             if travelling_to_city_tag.attrs['label'] in city_dict] )
 
+    ipdb.set_trace()
+
     """ TODO check above format works and if so delete below"""
     """
     travelling_to_city_list = [travelling_to_city_tag.attrs['label'] \
