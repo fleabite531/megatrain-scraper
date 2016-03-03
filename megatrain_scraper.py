@@ -96,7 +96,7 @@ def set_input(br, formname, controlid, input):
         control.value = [input]
 
     else:
-        raise ValueError("Control is of unknown type : " , control.type)
+        raise ValueError("Control is of unknown type : %s " % control.type)
 
     return control
 
