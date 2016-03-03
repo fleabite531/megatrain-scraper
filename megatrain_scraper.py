@@ -82,6 +82,24 @@ def set_dropdown_control(br, formname, controlid, input):
 
     return control
 
+def set_input(br, formname, controlid, input):
+
+    br.select_form(formname) 
+
+    control = br.form.find_control(controlid)
+    control.readonly = False
+    control.disabled = False
+    if control.type is "text":
+        control.value = input
+
+    else if control.type is "select":
+        control.value = [input]
+
+    else:
+        raise ValueError("Control is of unknown type : " , control.type)
+
+    return control
+
 
 def create_city_dict(br):
 
