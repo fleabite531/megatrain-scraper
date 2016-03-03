@@ -53,11 +53,12 @@ TRAVELLINGTOCONTROLID = "JourneyPlanner$ddlTravellingTo"
 NUMPASSENGERSCONTROLID = "JourneyPlanner$txtNumberOfPassengers"
 
 
-"""TODO combine 2 below into single function"""
 """ if field is text field, control.type will be "text"
 if is dropdown select box, will be "select"
+if latter, input is required to be of list type
 """
 
+"""
 def set_text_field(br, formname, controlid, input):
 
 
@@ -81,6 +82,8 @@ def set_dropdown_control(br, formname, controlid, input):
     control.value = [input]
 
     return control
+
+"""
 
 def set_input(br, formname, controlid, input):
 
