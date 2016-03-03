@@ -92,7 +92,7 @@ def set_input(br, formname, controlid, input):
     if control.type is "text":
         control.value = input
 
-    else if control.type is "select":
+    elif control.type is "select":
         control.value = [input]
 
     else:
