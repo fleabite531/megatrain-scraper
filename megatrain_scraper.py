@@ -157,6 +157,7 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city):
         travelling_by_control = br.form.find_control("JourneyPlanner$ddlTravellingBy")
 
         """TODO just do an if ... in ... """
+        ipdb.set_trace()
         for travelling_by_item in travelling_by_control.items:
             if travelling_by_item.name == "2":  # train
                 print "TRAIN ON ROUTE %s to %s " % (leaving_from_city , travelling_to_city)
