@@ -58,32 +58,6 @@ if is dropdown select box, will be "select"
 if latter, input is required to be of list type
 """
 
-"""
-def set_text_field(br, formname, controlid, input):
-
-
-    br.select_form(formname) 
-
-    control = br.form.find_control(controlid)
-
-    control.readonly = False
-    control.disabled = False
-    control.value = input
-
-    return control
-
-def set_dropdown_control(br, formname, controlid, input):
-
-    br.select_form(formname) 
-
-    control = br.form.find_control(controlid)
-    control.readonly = False
-    control.disabled = False
-    control.value = [input]
-
-    return control
-
-"""
 
 def set_input(br, formname, controlid, input):
 
