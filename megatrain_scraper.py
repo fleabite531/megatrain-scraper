@@ -57,9 +57,12 @@ NUMPASSENGERSCONTROLID = "JourneyPlanner$txtNumberOfPassengers"
 
 def set_text_field(br, formname, controlid, input):
 
+
     br.select_form(formname) 
 
     control = br.form.find_control(controlid)
+
+    ipdb.set_trace()
     control.readonly = False
     control.disabled = False
     control.value = input
@@ -71,6 +74,7 @@ def set_dropdown_control(br, formname, controlid, input):
     br.select_form(formname) 
 
     control = br.form.find_control(controlid)
+    ipdb.set_trace()
     control.readonly = False
     control.disabled = False
     control.value = [input]
