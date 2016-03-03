@@ -168,8 +168,10 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city):
         print "travelling to : ", travelling_to_city
 
         webpage = br.open(path)
-        set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
-        set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+        set_input(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
+        set_input(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+        # set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
+        # set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
         response = br.submit()
 
         """ above needed to be done in order to refresh the travelling to dropdown before
@@ -284,7 +286,8 @@ def main():
 
     """ set number of passengers as 1 """
 
-    set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
+    set_input(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
+    # set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
     response = br.submit()
 
