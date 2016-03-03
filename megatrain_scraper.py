@@ -54,6 +54,9 @@ NUMPASSENGERSCONTROLID = "JourneyPlanner$txtNumberOfPassengers"
 
 
 """TODO combine 2 below into single function"""
+""" if field is text field, control.type will be "text"
+if is dropdown select box, will be "select"
+"""
 
 def set_text_field(br, formname, controlid, input):
 
@@ -62,7 +65,6 @@ def set_text_field(br, formname, controlid, input):
 
     control = br.form.find_control(controlid)
 
-    ipdb.set_trace()
     control.readonly = False
     control.disabled = False
     control.value = input
@@ -74,7 +76,6 @@ def set_dropdown_control(br, formname, controlid, input):
     br.select_form(formname) 
 
     control = br.form.find_control(controlid)
-    ipdb.set_trace()
     control.readonly = False
     control.disabled = False
     control.value = [input]
