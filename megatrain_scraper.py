@@ -89,10 +89,10 @@ def set_input(br, formname, controlid, input):
     control = br.form.find_control(controlid)
     control.readonly = False
     control.disabled = False
-    if control.type is "text":
+    if control.type == "text":
         control.value = input
 
-    elif control.type is "select":
+    elif control.type == "select":
         control.value = [input]
 
     else:
