@@ -133,8 +133,12 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city):
 
     print "checking leaving from : " , leaving_from_city
 
-    set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
-    set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+    # set_text_field(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
+    # set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+
+    set_input(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
+    set_input(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+
     response = br.submit()
 
     """ iterate through the travelling to cities in the dropdown that results from 
@@ -171,8 +175,10 @@ def train_routes_from_city(br, path, city_dict, leaving_from_city):
         though it looks redundant
         """
 
-        set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-        set_dropdown_control(br, FORMNAME, TRAVELLINGTOCONTROLID, city_dict[travelling_to_city])
+        set_input(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+        set_input(br, FORMNAME, TRAVELLINGTOCONTROLID, city_dict[travelling_to_city])
+        # set_dropdown_control(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
+        # set_dropdown_control(br, FORMNAME, TRAVELLINGTOCONTROLID, city_dict[travelling_to_city])
 
         response = br.submit()
         br.select_form(FORMNAME)
