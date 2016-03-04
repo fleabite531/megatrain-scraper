@@ -46,177 +46,17 @@ import re
 
 """set up names of form, control ids etc """
 
+"""
 FORMNAME = "ctl01"
 CONTROLSTATEID = "JourneyPlanner$ddlLeavingFromState"
 LEAVINGFROMCONTROLID = "JourneyPlanner$ddlLeavingFrom"
 TRAVELLINGTOCONTROLID = "JourneyPlanner$ddlTravellingTo"
 NUMPASSENGERSCONTROLID = "JourneyPlanner$txtNumberOfPassengers"
 
+PATH = "http://uk.megabus.com/"
 
-""" if field is text field, control.type will be "text"
-if is dropdown select box, will be "select"
-if latter, input is required to be of list type
 """
 
-
-def set_input(br, formname, controlid, input):
-
-    br.select_form(formname) 
-
-    control = br.form.find_control(controlid)
-    control.readonly = False
-    control.disabled = False
-    if control.type == "text":
-        control.value = input
-
-    elif control.type == "select":
-        control.value = [input]
-
-    else:
-        raise ValueError("Control is of unknown type : %s " % control.type)
-
-    return control
-
-
-def create_city_dict(br):
-
-    city_dict = {}
-
-    br.select_form(FORMNAME) 
-
-    """ just select cities in England (1), Scotland (2) or Wales (3) """
-
-    for country_id in range (1,4):
-
-        leaving_from_state_control = br.form.find_control(CONTROLSTATEID)
-        leaving_from_state_control.value = [str(country_id)]
-
-        response = br.submit()
-    
-        br.select_form(FORMNAME) 
-    
-        leaving_from_control = br.form.find_control(LEAVINGFROMCONTROLID)
-        
-        for item in leaving_from_control.items:
-            if int(item.name) > 0:
-                city_dict[item.attrs["label"]] = item.name
-    
-    return city_dict
-
-
-def train_routes_from_city(br, path, city_dict, leaving_from_city):
-
-    train_route_list = []
-
-    print "checking leaving from : " , leaving_from_city
-
-    set_input(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
-    set_input(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-
-    response = br.submit()
-
-    """ iterate through the travelling to cities in the dropdown that results from 
-    submitting each of the leaving from cities
-    """
-
-    """TODO change below to function but make input blank"""
-   
-    br.select_form(FORMNAME) 
-    travelling_to_control = br.form.find_control(TRAVELLINGTOCONTROLID)
-    travelling_to_control.readonly = False
-    travelling_to_control.disabled = False
-
-    """ create list from travelling to dropdown that only includes cities in mainland GB
-    """
-
-    travelling_to_city_list = ( [travelling_to_city_tag.attrs['label'] 
-            for travelling_to_city_tag in travelling_to_control.items 
-            if travelling_to_city_tag.attrs['label'] in city_dict] )
-
-
-    for travelling_to_city in travelling_to_city_list:
-
-        print "travelling to : ", travelling_to_city
-
-        webpage = br.open(path)
-        set_input(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
-        set_input(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-        response = br.submit()
-
-        """ above needed to be done in order to refresh the travelling to dropdown before
-        submitting the same info but this time with travelling to filled in as well
-        was getting incorrect responses before clearing the form with the above, even
-        though it looks redundant
-        """
-
-        set_input(br, FORMNAME, LEAVINGFROMCONTROLID, city_dict[leaving_from_city])
-        set_input(br, FORMNAME, TRAVELLINGTOCONTROLID, city_dict[travelling_to_city])
-
-        response = br.submit()
-        br.select_form(FORMNAME)
-        travelling_by_control = br.form.find_control("JourneyPlanner$ddlTravellingBy")
-
-        for travelling_by_item in travelling_by_control.items:
-            if travelling_by_item.name == "2":  # train
-                print "TRAIN ON ROUTE %s to %s " % (leaving_from_city , travelling_to_city)
-
-                train_route_list.append([leaving_from_city , travelling_to_city])
-
-    return train_route_list
-
-
-def getSchedule(leaving_from_city, travelling_to_city, days_to_check = 8):
-
-    resulturlstart = "http://uk.megabus.com/JourneyResults.aspx?originCode=%s&destinationCode=\
-            %s&passengerCount=1&transportType=2&outboundDepartureDate=" % \
-            (city_dict[leaving_from_city] , city_dict[travelling_to_city])
-
-    now = datetime.date.today()
-
-    """ format of datestring is 24%2f03%2f2016 for 24th march 2016"""
-    dateformat = "%d%%2f%m%%2f%Y" 
-
-    timere = re.compile("\\d\\d:\\d\\d")
-
-    schedulelist = []
-
-    """trains are added to the booking screen from 36 days. so start checking from 28 days
-    and keep checking for 7 days to cover a week. In future possibly will check for 
-    2 weeks, so start from 22 days in case a partic week just has that train booked up
-    already"""
-
-    for i in range(36 - days_to_check ,36):
-
-        day = now + datetime.timedelta(i)
-
-        """strftime %w uses clearly incorrect ;) 0 as Sunday"""
-
-        weekday = int(day.strftime("%w")) - 1
-
-        datestring = day.strftime(dateformat)
-
-        resulturlstring = resulturlstart + datestring
-
-        webpage_text = requests.get(resulturlstring).text
-
-        soup = BeautifulSoup(webpage_text)
-
-        row_tag_list = soup.find_all(id=\
-                re.compile("JourneyResylts_OutboundList_GridViewResults_ctl\d\d_row_item"))
-
-        for row_tag in row_tag_list:
-            two_tag = row_tag.find(class_="two")
-
-            timelist = timere.findall(str(two_tag))
-
-            schedule = megaroute.MegaSchedule(weekday , \
-                    time.strptime(timelist[0], "%H:%M"), \
-                    time.strptime(timelist[1], "%H:%M"))
-
-            schedulelist.append(schedule)
-
-    return schedulelist
-            
 
 def main():
 
@@ -224,7 +64,10 @@ def main():
     """ get path either as file or url and open contents into webpage_text as string"""
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("path", help="path to file or url to process")
+
+    """made below into constant as doesn't really change"""
+    # parser.add_argument("path", help="path to file or url to process")
+
     parser.add_argument("output", help="output file")
     parser.add_argument("--from-city", "-f", help="optional field if only want to check leaving "
             "from a specific city")
@@ -237,11 +80,7 @@ def main():
 
     args = parser.parse_args()
 
-    """use mechanize to open webpage.
-    code originally from 
-    http://www.pythonforbeginners.com/cheatsheet/python-mechanize-cheat-sheet
     """
-
     br = mechanize.Browser()
     # br.set_all_readonly(False)    # allow everything to be written to
     br.set_handle_robots(False)   # ignore robots
@@ -249,23 +88,27 @@ def main():
     br.addheaders = [('User-agent', 'Firefox')]
 
     webpage = br.open(args.path)
+    """
 
     """ set number of passengers as 1 """
 
-    set_input(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
+    # set_input(br, FORMNAME, NUMPASSENGERSCONTROLID, "1")
 
-    response = br.submit()
+    # response = br.submit()
 
 
     """create dictionary for all the cities from the leaving from cities"""
 
-    city_dict = create_city_dict(br)
+    # city_dict = create_city_dict(br)
+
+
+    mega_session = megaroute.megatrain()
 
     """ if valid_cities argument, then just print valid cities and exit"""
 
     if args.print_valid_cities:
         print "Valid cities are : "
-        for city in sorted(city_dict.keys()):
+        for city in sorted(mega_session.city_dict.keys()):
             print city
         sys.exit()
 
@@ -274,7 +117,11 @@ def main():
 
     """ reopen page in order to clear country field as its optional but defines leaving_from"""
 
-    webpage = br.open(args.path)
+    # webpage = br.open(args.path)
+
+    mega_session.refresh_page()
+
+    ipdb.set_trace()
 
 
     """if from defined, then set that as city, check if from is valid, else exit
