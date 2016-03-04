@@ -123,9 +123,10 @@ class MegaRoute:
 
 
     def addSchedule(self, departuretime, arrivaltime, days=[]):
-
-        
         self._schedule.append(MegaSchedule(departuretime, arrivaltime, days))
+
+    def addSchedule(self, schedule):
+        self._schedule.append(schedule)
         
 
     def returnScheduleList(self):
