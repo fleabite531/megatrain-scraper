@@ -27,7 +27,7 @@ add schedule flag to acquire schedule
 
 """
 
-import megaroute
+import megatrain
 
 import sys
 import argparse
@@ -102,7 +102,7 @@ def main():
     # city_dict = create_city_dict(br)
 
 
-    mega_session = megaroute.megatrain()
+    mega_session = megatrain.MegaSession()
 
     """ if valid_cities argument, then just print valid cities and exit"""
 
@@ -121,21 +121,19 @@ def main():
 
     mega_session.refresh_page()
 
-    ipdb.set_trace()
-
 
     """if from defined, then set that as city, check if from is valid, else exit
     else iterate through whole list 
     """
 
     if args.from_city is None:
-        for leaving_from_city in city_dict:
-            train_route_list += train_routes_from_city(br, args.path, city_dict, leaving_from_city)
+        for leaving_from_city in mega_session.city_dict:
+            train_route_list += mega_session.train_routes_from_city(leaving_from_city)
 
     else:
 
         from_city = ""
-        for city in city_dict:
+        for city in mega_session.city_dict:
             if city.lower() == args.from_city.lower():
                 from_city = city
                 break
@@ -146,9 +144,9 @@ def main():
        
         print "Checking for trains leaving from " + from_city
 
-        train_routes = megaroute.MegaRouteList()
+        train_routes = megatrain.MegaRouteList()
 
-        train_route_list = train_routes_from_city(br, args.path, city_dict, from_city)
+        train_route_list = mega_session.train_routes_from_city(from_city)
 
         for fromcity, tocity in train_route_list:
             train_routes.AddRoute(fromcity, tocity)
@@ -156,7 +154,6 @@ def main():
         for route in train_routes:
             print "Train route : " , route
 
-        ipdb.set_trace()
 
         """pre making MegaTrain class
         train_route_list = train_routes_from_city(br, city_dict, from_city)
