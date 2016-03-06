@@ -4,8 +4,8 @@ import datetime
 
 import time
 
-weekdayDict = {0:"Monday" , 1:"Tuesday" , 2:"Wednesday" , 3:"Thursday" , 4:"Friday" , \
-        5: "Saturday" , 6:"Sunday"}
+WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
+        "Saturday", "Sunday"]
 
 import mechanize
 
@@ -57,11 +57,11 @@ class MegaSession:
     """
 
 
-    def set_input(self, controlid, input):
+    def set_input(self, control_id, input):
 
         self._br.select_form(MegaSession.FORM_NAME) 
 
-        control = self._br.form.find_control(controlid)
+        control = self._br.form.find_control(control_id)
         control.readonly = False
         control.disabled = False
         if control.type == "text":
@@ -86,8 +86,7 @@ class MegaSession:
 
         for country_id in range (1,4):
 
-            leaving_from_state_control = self._br.form.find_control(MegaSession.CONTROL_STATE_ID)
-            leaving_from_state_control.value = [str(country_id)]
+            leaving_from_state_control = self.set_input(MegaSession.CONTROL_STATE_ID, str(country_id))
 
             response = self._br.submit()
         
@@ -119,8 +118,6 @@ class MegaSession:
         submitting each of the leaving from cities
         """
 
-        """TODO change below to function but make input blank"""
-       
         self._br.select_form(MegaSession.FORM_NAME) 
         travelling_to_control = self._br.form.find_control(MegaSession.TRAVELLING_TO_CONTROL_ID)
         travelling_to_control.readonly = False
@@ -138,7 +135,7 @@ class MegaSession:
 
             print "travelling to : ", travelling_to_city
 
-            __ = self._br.open(MegaSession.PATH)
+            self._br.open(MegaSession.PATH)
             self.set_input(MegaSession.NUM_PASSENGERS_CONTROL_ID, "1")
             self.set_input(MegaSession.LEAVING_FROM_CONTROL_ID, self.city_dict[leaving_from_city])
             response = self._br.submit()
@@ -215,10 +212,6 @@ class MegaSession:
                 schedulelist.append(schedule)
 
         return schedulelist
-                
-
-
-          
 
 
 """departure and arrivaltimes should be datetime.time objects
@@ -233,7 +226,7 @@ class MegaSchedule:
         self._day = day
 
     def __repr__(self):
-        return "%s : %s - %s" % (weekdayDict[self._day], \
+        return "%s : %s - %s" % (WEEKDAYS[self._day], \
                 time.strftime("%H:%M", self._departuretime) , \
                 time.strftime("%H:%M", self._arrivaltime))
 
