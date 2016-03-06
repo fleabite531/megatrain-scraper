@@ -1,22 +1,18 @@
-
-import ipdb
+import requests
 import datetime
-
+import re
 import time
+
+import mechanize
+import ipdb
+
+from bs4 import BeautifulSoup
+
 
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
         "Saturday", "Sunday"]
 
-import mechanize
-
-from bs4 import BeautifulSoup
-
-import requests
-
-import re
-
-
-class MegaSession:
+class Session:
 
     """set up names of form, control ids etc """
 
@@ -41,9 +37,9 @@ class MegaSession:
         self._br.set_handle_refresh(False)
         self._br.addheaders = [('User-agent', 'Firefox')]
 
-        self._webpage = self._br.open(MegaSession.PATH)
+        self._webpage = self._br.open(Session.PATH)
 
-        self.set_input(MegaSession.NUM_PASSENGERS_CONTROL_ID, "1")
+        self.set_input(Session.NUM_PASSENGERS_CONTROL_ID, "1")
 
         __ = self._br.submit()
 
@@ -59,7 +55,7 @@ class MegaSession:
 
     def set_input(self, control_id, input):
 
-        self._br.select_form(MegaSession.FORM_NAME) 
+        self._br.select_form(Session.FORM_NAME) 
 
         control = self._br.form.find_control(control_id)
         control.readonly = False
@@ -80,19 +76,19 @@ class MegaSession:
 
         city_dict = {}
 
-        self._br.select_form(MegaSession.FORM_NAME) 
+        self._br.select_form(Session.FORM_NAME) 
 
         """ just select cities in England (1), Scotland (2) or Wales (3) """
 
         for country_id in range (1,4):
 
-            leaving_from_state_control = self.set_input(MegaSession.CONTROL_STATE_ID, str(country_id))
+            leaving_from_state_control = self.set_input(Session.CONTROL_STATE_ID, str(country_id))
 
             response = self._br.submit()
         
-            self._br.select_form(MegaSession.FORM_NAME) 
+            self._br.select_form(Session.FORM_NAME) 
         
-            leaving_from_control = self._br.form.find_control(MegaSession.LEAVING_FROM_CONTROL_ID)
+            leaving_from_control = self._br.form.find_control(Session.LEAVING_FROM_CONTROL_ID)
             
             for item in leaving_from_control.items:
                 if int(item.name) > 0:
@@ -101,7 +97,7 @@ class MegaSession:
         return city_dict
 
     def refresh_page(self):
-        __ = self._br.open(MegaSession.PATH)
+        __ = self._br.open(Session.PATH)
 
     def train_routes_from_city(self, leaving_from_city):
 
@@ -109,8 +105,8 @@ class MegaSession:
 
         print "checking leaving from : " , leaving_from_city
 
-        self.set_input(MegaSession.NUM_PASSENGERS_CONTROL_ID, "1")
-        self.set_input(MegaSession.LEAVING_FROM_CONTROL_ID, self.city_dict[leaving_from_city])
+        self.set_input(Session.NUM_PASSENGERS_CONTROL_ID, "1")
+        self.set_input(Session.LEAVING_FROM_CONTROL_ID, self.city_dict[leaving_from_city])
 
         response = self._br.submit()
 
@@ -118,8 +114,8 @@ class MegaSession:
         submitting each of the leaving from cities
         """
 
-        self._br.select_form(MegaSession.FORM_NAME) 
-        travelling_to_control = self._br.form.find_control(MegaSession.TRAVELLING_TO_CONTROL_ID)
+        self._br.select_form(Session.FORM_NAME) 
+        travelling_to_control = self._br.form.find_control(Session.TRAVELLING_TO_CONTROL_ID)
         travelling_to_control.readonly = False
         travelling_to_control.disabled = False
 
@@ -135,9 +131,9 @@ class MegaSession:
 
             print "travelling to : ", travelling_to_city
 
-            self._br.open(MegaSession.PATH)
-            self.set_input(MegaSession.NUM_PASSENGERS_CONTROL_ID, "1")
-            self.set_input(MegaSession.LEAVING_FROM_CONTROL_ID, self.city_dict[leaving_from_city])
+            self._br.open(Session.PATH)
+            self.set_input(Session.NUM_PASSENGERS_CONTROL_ID, "1")
+            self.set_input(Session.LEAVING_FROM_CONTROL_ID, self.city_dict[leaving_from_city])
             response = self._br.submit()
 
             """ above needed to be done in order to refresh the travelling to dropdown before
@@ -146,12 +142,12 @@ class MegaSession:
             though it looks redundant
             """
 
-            self.set_input(MegaSession.LEAVING_FROM_CONTROL_ID, self.city_dict[leaving_from_city])
-            self.set_input(MegaSession.TRAVELLING_TO_CONTROL_ID, self.city_dict[travelling_to_city])
+            self.set_input(Session.LEAVING_FROM_CONTROL_ID, self.city_dict[leaving_from_city])
+            self.set_input(Session.TRAVELLING_TO_CONTROL_ID, self.city_dict[travelling_to_city])
 
             response = self._br.submit()
-            self._br.select_form(MegaSession.FORM_NAME)
-            travelling_by_control = self._br.form.find_control(MegaSession.TRAVELLING_BY_CONTROL_ID)
+            self._br.select_form(Session.FORM_NAME)
+            travelling_by_control = self._br.form.find_control(Session.TRAVELLING_BY_CONTROL_ID)
 
             for travelling_by_item in travelling_by_control.items:
                 if travelling_by_item.name == "2":  # train
@@ -205,7 +201,7 @@ class MegaSession:
 
                 timelist = timere.findall(str(two_tag))
 
-                schedule = MegaSession.MegaSchedule(weekday , \
+                schedule = Session.MegaSchedule(weekday , \
                         time.strptime(timelist[0], "%H:%M"), \
                         time.strptime(timelist[1], "%H:%M"))
 
